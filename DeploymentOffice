@@ -1,0 +1,47 @@
+@echo off
+title Deployment Tools by Capikputh
+setlocal
+
+:: URL fail dari GitHub
+set "setupURL=https://github.com/Capikputh/Deployment-Tool/raw/refs/heads/main/setup.exe"
+set "configURL=https://github.com/Capikputh/Deployment-Tool/raw/refs/heads/main/Configuration.xml"
+
+:: Lokasi folder simpan fail
+set "targetFolder=%USERPROFILE%\Downloads\CapikDeploy"
+
+:: Buat folder jika belum wujud
+if not exist "%targetFolder%" (
+    echo Membuat folder %targetFolder%...
+    mkdir "%targetFolder%"
+)
+
+:: Masuk ke folder
+cd /d "%targetFolder%"
+
+:: Muat turun setup.exe
+if not exist setup.exe (
+    echo Muat turun setup.exe...
+    curl -L "%setupURL%" -o setup.exe
+) else (
+    echo setup.exe sudah wujud. Skip muat turun.
+)
+
+:: Muat turun Configuration.xml
+if not exist Configuration.xml (
+    echo Muat turun Configuration.xml...
+    curl -L "%configURL%" -o Configuration.xml
+) else (
+    echo Configuration.xml sudah wujud. Skip muat turun.
+)
+
+:: Jalankan pemasangan
+echo Menjalankan setup.exe /configure Configuration.xml ...
+setup.exe /configure Configuration.xml
+
+:: Siap
+echo.
+echo Pemasangan dimulakan. Skrip ini akan dipadam secara automatik dalam 5 saat...
+timeout /t 5 >nul
+
+:: Padam skrip ini sendiri
+del "%~f0"

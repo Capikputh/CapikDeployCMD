@@ -6,16 +6,8 @@ setlocal
 set "setupURL=https://github.com/Capikputh/Deployment-Tool/raw/refs/heads/main/setup.exe"
 set "configURL=https://github.com/Capikputh/Deployment-Tool/raw/refs/heads/main/Configuration.xml"
 
-:: Lokasi folder simpan fail
-set "targetFolder=%USERPROFILE%\Downloads\CapikDeploy"
-
-:: Buat folder jika belum wujud
-if not exist "%targetFolder%" (
-    echo Membuat folder %targetFolder%...
-    mkdir "%targetFolder%"
-)
-
-:: Masuk ke folder
+:: Simpan fail dalam folder sama dengan skrip ini
+set "targetFolder=%~dp0"
 cd /d "%targetFolder%"
 
 :: Muat turun setup.exe
@@ -38,10 +30,9 @@ if not exist Configuration.xml (
 echo Menjalankan setup.exe /configure Configuration.xml ...
 setup.exe /configure Configuration.xml
 
-:: Siap
 echo.
-echo Pemasangan dimulakan. Skrip ini akan dipadam secara automatik dalam 5 saat...
+echo Pemasangan dimulakan. Skrip akan dipadam dalam 5 saat...
 timeout /t 5 >nul
 
-:: Padam skrip ini sendiri
+:: Auto delete skrip
 del "%~f0"
